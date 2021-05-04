@@ -9,7 +9,7 @@
 namespace pandemic{
 
     class Board{
-
+        
         static std::map<City,std::set<City>> board_graph;
         std::map<City,int> disease_level;
         std::set<City> cured;
@@ -18,14 +18,19 @@ namespace pandemic{
         public:
         
         Board(){}
+        ~Board(){}
+        
+
         bool is_clean();
         void remove_cures();
-        int& operator[](City);
+        int& operator[](City city);
+        bool isConnected(City&,City&);
+        void markCure(Color);
+        bool isCured(Color);
+        bool hasResearch(City&);
+        void buildResearch(City&);
+        friend std::ostream& operator<<(std::ostream& out, const Board& b);
 
-
-        friend std::ostream& operator<<(std::ostream& os, const Board& b){std::cout << "oper << board"; return os;}
-
-        ~Board(){}
 
     };
 }

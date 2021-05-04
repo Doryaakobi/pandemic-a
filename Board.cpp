@@ -1,79 +1,125 @@
 #include "Board.hpp"
 
 using namespace std;
-using namespace pandemic;
+namespace pandemic
+{
 
-bool Board::is_clean(){
-    for(auto& city : disease_level){
-        if(city.second > 0){
-            return false;
+    /* 
+        map<City,std::set<City>> board_graph;
+        map<City,int> disease_level;
+        set<City> cured;
+        set<City> research_stations;
+*/
+
+    int &Board::operator[](City city)
+    {
+        return disease_level[city];
+    }
+
+    bool Board::is_clean(){
+        for (auto &city : disease_level){
+            if (city.second > 0){
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+
+    void Board::remove_cures(){
+        for (auto &city : disease_level){
+            city.second = 0;
         }
     }
-    return true;
+
+    std::ostream &operator<<(std::ostream &out, const Board &b)
+    {
+
+        std::cout << "operator";
+        return out;
+    }
+
+
+    bool Board::isConnected(City& src, City& dst){
+        
+        if(board_graph.at(src).count(dst) > 0){
+            return true;
+        }
+        return false;
+    }
+
+    bool Board::isCured(Color c){
+        if(cured.contains(c)){
+            return true; 
+        }
+        return false;
+    }
+
+    void Board::markCure(Color c){
+        cured.insert(c);
+    }
+
+    void Board::buildResearch(City& city){
+
+        research_stations.insert(city);
+    }
+
+    bool Board::hasResearch(City & city){
+
+        return research_stations.contains(city);
+    }
+
+
+
+    std::map<City, std::set<City>> Board::board_graph{
+
+        {Algiers, {Madrid, Paris, Istanbul, Cairo}},
+        {Atlanta, {Chicago, Miami, Washington}},
+        {Baghdad, {Tehran, Istanbul, Cairo, Riyadh, Karachi}},
+        {Bangkok, {Kolkata, Chennai, Jakarta, HoChiMinhCity, HongKong}},
+        {Beijing, {Shanghai, Seoul}},
+        {Bogota, {MexicoCity, Lima, Miami, SaoPaulo, BuenosAires}},
+        {BuenosAires, {Bogota, SaoPaulo}},
+        {Cairo, {Algiers, Istanbul, Baghdad, Khartoum, Riyadh}},
+        {Chennai, {Mumbai, Delhi, Kolkata, Bangkok, Jakarta}},
+        {Chicago, {SanFrancisco, LosAngeles, MexicoCity, Atlanta, Montreal}},
+        {Delhi, {Tehran, Karachi, Mumbai, Chennai, Kolkata}},
+        {Essen, {London, Paris, Milan, StPetersburg}},
+        {HoChiMinhCity, {Jakarta, Bangkok, HongKong, Manila}},
+        {HongKong, {Bangkok, Kolkata, HoChiMinhCity, Shanghai, Manila, Taipei}},
+        {Istanbul, {Milan, Algiers, StPetersburg, Cairo, Baghdad, Moscow}},
+        {Jakarta, {Chennai, Bangkok, HoChiMinhCity, Sydney}},
+        {Johannesburg, {Kinshasa, Khartoum}},
+        {Karachi, {Tehran, Baghdad, Riyadh, Mumbai, Delhi}},
+        {Khartoum, {Cairo, Lagos, Kinshasa, Johannesburg}},
+        {Kinshasa, {Lagos, Khartoum, Johannesburg}},
+        {Kolkata, {Delhi, Chennai, Bangkok, HongKong}},
+        {Lagos, {SaoPaulo, Khartoum, Kinshasa}},
+        {Lima, {MexicoCity, Bogota, Santiago}},
+        {London, {NewYork, Madrid, Essen, Paris}},
+        {LosAngeles, {SanFrancisco, Chicago, MexicoCity, Sydney}},
+        {Madrid, {London, NewYork, Paris, SaoPaulo, Algiers}},
+        {Manila, {Taipei, SanFrancisco, HoChiMinhCity, Sydney}},
+        {MexicoCity, {LosAngeles, Chicago, Miami, Lima, Bogota}},
+        {Miami, {Atlanta, MexicoCity, Washington, Bogota}},
+        {Milan, {Essen, Paris, Istanbul}},
+        {Montreal, {Chicago, Washington, NewYork}},
+        {Moscow, {StPetersburg, Istanbul, Tehran}},
+        {Mumbai, {Karachi, Delhi, Chennai}},
+        {NewYork, {Montreal, Washington, London, Madrid}},
+        {Osaka, {Taipei, Tokyo}},
+        {Paris, {Algiers, Essen, Madrid, Milan, London}},
+        {Riyadh, {Baghdad, Cairo, Karachi}},
+        {SanFrancisco, {LosAngeles, Chicago, Tokyo, Manila}},
+        {Santiago, {Lima}},
+        {SaoPaulo, {Bogota, BuenosAires, Lagos, Madrid}},
+        {Seoul, {Beijing, Shanghai, Tokyo}},
+        {Shanghai, {Beijing, HongKong, Taipei, Seoul, Tokyo}},
+        {StPetersburg, {Essen, Istanbul, Moscow}},
+        {Sydney, {Jakarta, Manila, LosAngeles}},
+        {Taipei, {Shanghai, HongKong, Osaka, Manila}},
+        {Tehran, {Baghdad, Moscow, Karachi, Delhi}},
+        {Tokyo, {Seoul, Shanghai, Osaka, SanFrancisco}},
+        {Washington, {Atlanta, NewYork, Montreal, Miami}}};
 }
-
-
-
-
-void Board::remove_cures(){}
-
-
-
-
-int& Board::operator[](City city){
-
-    return disease_level[city];
-
-}
-
-
-std::map<City, std::set<City>> Board::board_graph {
-    { Algiers, {Madrid, Paris, Istanbul, Cairo } },
-    { Atlanta, {Chicago, Miami, Washington } },
-    { Baghdad, {Tehran, Istanbul, Cairo, Riyadh, Karachi } },
-    { Bangkok, {Kolkata, Chennai, Jakarta, HoChiMinhCity, HongKong } },
-    { Beijing, {Shanghai, Seoul } },
-    { Bogota, {MexicoCity, Lima, Miami, SaoPaulo, BuenosAires } },
-    { BuenosAires, {Bogota, SaoPaulo } },
-    { Cairo, {Algiers, Istanbul, Baghdad, Khartoum, Riyadh } },
-    { Chennai, {Mumbai, Delhi, Kolkata, Bangkok, Jakarta } },
-    { Chicago, {SanFrancisco, LosAngeles, MexicoCity, Atlanta, Montreal } },
-    { Delhi, {Tehran, Karachi, Mumbai, Chennai, Kolkata } },
-    { Essen, {London, Paris, Milan, StPetersburg } },
-    { HoChiMinhCity, {Jakarta, Bangkok, HongKong, Manila } },
-    { HongKong, {Bangkok, Kolkata, HoChiMinhCity, Shanghai, Manila, Taipei } },
-    { Istanbul, {Milan, Algiers, StPetersburg, Cairo, Baghdad, Moscow } },
-    { Jakarta, {Chennai, Bangkok, HoChiMinhCity, Sydney } },
-    { Johannesburg, {Kinshasa, Khartoum } },
-    { Karachi, {Tehran, Baghdad, Riyadh, Mumbai, Delhi } },
-    { Khartoum, {Cairo, Lagos, Kinshasa, Johannesburg } },
-    { Kinshasa, {Lagos, Khartoum, Johannesburg } },
-    { Kolkata, {Delhi, Chennai, Bangkok, HongKong } },
-    { Lagos, {SaoPaulo, Khartoum, Kinshasa } },
-    { Lima, {MexicoCity, Bogota, Santiago } },
-    { London, {NewYork, Madrid, Essen, Paris } },
-    { LosAngeles, {SanFrancisco, Chicago, MexicoCity, Sydney } },
-    { Madrid, {London, NewYork, Paris, SaoPaulo, Algiers } },
-    { Manila, {Taipei, SanFrancisco, HoChiMinhCity, Sydney } },
-    { MexicoCity, {LosAngeles, Chicago, Miami, Lima, Bogota } },
-    { Miami, {Atlanta, MexicoCity, Washington, Bogota } },
-    { Milan, {Essen, Paris, Istanbul } },
-    { Montreal, {Chicago, Washington, NewYork } },
-    { Moscow, {StPetersburg, Istanbul, Tehran } },
-    { Mumbai, {Karachi, Delhi, Chennai } },
-    { NewYork, {Montreal, Washington, London, Madrid } },
-    { Osaka, {Taipei, Tokyo } },
-    { Paris, {Algiers, Essen, Madrid, Milan, London } },
-    { Riyadh, {Baghdad, Cairo, Karachi } },
-    { SanFrancisco, {LosAngeles, Chicago, Tokyo, Manila } },
-    { Santiago, {Lima } },
-    { SaoPaulo, {Bogota, BuenosAires, Lagos, Madrid } },
-    { Seoul, {Beijing, Shanghai, Tokyo } },
-    { Shanghai, {Beijing, HongKong, Taipei, Seoul, Tokyo } },
-    { StPetersburg, {Essen, Istanbul, Moscow } },
-    { Sydney, {Jakarta, Manila, LosAngeles } },
-    { Taipei, {Shanghai, HongKong, Osaka, Manila } },
-    { Tehran, {Baghdad, Moscow, Karachi, Delhi } },
-    { Tokyo, {Seoul, Shanghai, Osaka, SanFrancisco } },
-    { Washington, {Atlanta, NewYork, Montreal, Miami } }
-};
