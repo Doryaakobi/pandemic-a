@@ -146,7 +146,7 @@ TEST_CASE("Game Initialization Using Base Player methods:"){
      player.treat(City::Atlanta); // Decreasses the disease level to 0
 
 
-     CHECK_NOTHROW(player.treat(City::Atlanta));  // treat() should trow exception, on account of disease level is 0.
+     CHECK_THROWS(player.treat(City::Atlanta));  // treat() should trow exception, on account of disease level is 0.
 
      board[City::Atlanta] = 1;
      CHECK_NOTHROW(player.take_card(City::Atlanta).treat(City::Atlanta));
@@ -164,52 +164,52 @@ TEST_CASE("Game Initialization Using Base Player methods:"){
      CHECK_NOTHROW(player.drive(City::Montreal)); // Connected to NewYork.
 
      CHECK_THROWS(player.drive(City::Seoul)); // Not connected to Montreal.
-     CHECK_NOTHROW(player.drive(City::Madrid)); // Connected to Montreal.
-     CHECK_THROWS(player.drive(City::LosAngeles));  // Not connected to Madrid.
-     CHECK_THROWS(player.drive(City::Cairo)); // Not connected to Madrid.
+     CHECK_NOTHROW(player.drive(City::Chicago)); // Connected to Montreal.
+     CHECK_NOTHROW(player.drive(City::LosAngeles));  // Not connected to Chicago.
+     CHECK_THROWS(player.drive(City::Cairo)); // Not connected to Chicago.
 
 
      // Route in which the player can drive throught according to the relevant neighbours.
-     CHECK_NOTHROW(player.drive(City::Paris)
-                         .drive(City::Milan)
-                         .drive(City::Essen)
-                         .drive(City::StPetersburg)); 
+     CHECK_NOTHROW(player.drive(City::SanFrancisco)
+                         .drive(City::Tokyo)
+                         .drive(City::Seoul)
+                         .drive(City::Beijing)); 
 
 
      CHECK_THROWS(player.build()); // in order to build() player must hold first the city's card.
-     CHECK_NOTHROW(player.take_card(City::StPetersburg).build());
+     CHECK_NOTHROW(player.take_card(City::Beijing).build());
 
-     board[City::StPetersburg] = 2;
-     CHECK_EQ(board[City::StPetersburg],2);
+     board[City::Beijing] = 2;
+     CHECK_EQ(board[City::Beijing],2);
 
      
 
-     CHECK_NOTHROW(player.treat(City::StPetersburg)); // Decrease disease level by 1.
-     CHECK_EQ(board[City::StPetersburg],1);
+     CHECK_NOTHROW(player.treat(City::Beijing)); // Decrease disease level by 1.
+     CHECK_EQ(board[City::Beijing],1);
 
-     CHECK_NOTHROW(player.treat(City::StPetersburg)); // Decrease disease level by 1.
-     CHECK_EQ(board[City::StPetersburg],0);
+     CHECK_NOTHROW(player.treat(City::Beijing)); // Decrease disease level by 1.
+     CHECK_EQ(board[City::Beijing],0);
 
-     CHECK_NOTHROW(player.drive(City::Essen));
-     take_5Blue_cards(player); // draw Essen Card
+     CHECK_NOTHROW(player.drive(City::Seoul));
+     take_5Red_cards(player); // draw Seoul Card
 
-     CHECK_THROWS(player.discover_cure(Color::Blue)); // No research station in Essen
+     CHECK_THROWS(player.discover_cure(Color::Red)); // No research station in Seoul
 
-     CHECK_NOTHROW(player.build()); // discarding Essen card
+     CHECK_NOTHROW(player.build()); // discarding Seoul card
 
-     CHECK_THROWS(player.discover_cure(Color::Blue)); // Currently player should hold 4 blue cards.
+     CHECK_THROWS(player.discover_cure(Color::Red)); // Currently player should hold 4 red cards.
 
-     CHECK_NOTHROW(player.take_card(City::Essen).discover_cure(Color::Blue)); 
+     CHECK_NOTHROW(player.take_card(City::Seoul).discover_cure(Color::Red)); 
 
-     board[City::Essen] = 5;
-     CHECK_EQ(board[City::Essen], 5);
-     player.treat(City::Essen); // At this point the cure for the disease was discovered, casuing the level to drop to 0.
-     CHECK_EQ(board[City::Essen], 0);
+     board[City::Seoul] = 5;
+     CHECK_EQ(board[City::Seoul], 5);
+     player.treat(City::Seoul); // At this point the cure for the disease was discovered, casuing the level to drop to 0.
+     CHECK_EQ(board[City::Seoul], 0);
 
-     CHECK_NOTHROW(player.drive(City::London).drive(City::NewYork)); // NewYork is Londons neighbour
-     CHECK_NOTHROW(player.take_card(City::NewYork).build()); // build a research station
+     CHECK_NOTHROW(player.drive(City::Shanghai).drive(City::HongKong)); // NewYork is Londons neighbour
+     CHECK_NOTHROW(player.take_card(City::HongKong).build()); // build a research station
 
-     CHECK_NOTHROW(player.fly_shuttle(City::Essen)); // it's allowed to perform "fly shuttle" between two cities with research stations.
+     CHECK_NOTHROW(player.fly_shuttle(City::Seoul)); // it's allowed to perform "fly shuttle" between two cities with research stations.
 
      CHECK_THROWS(player.fly_shuttle(City::Johannesburg)); // no research station in Johannesburg
 

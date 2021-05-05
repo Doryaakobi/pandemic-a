@@ -8,7 +8,7 @@ enum Color{
     Yellow
 };
 
-inline std::string getColor(int c) {
+inline std::string getCityColor(int c) {
 
     if(c == 0) { return "Black"; }
     if(c == 1) { return "Red"; }
@@ -16,7 +16,7 @@ inline std::string getColor(int c) {
     else { return "Yellow"; }
 }
 
-const std::map<City, Color> City_colors {
+const std::map<City, Color> City_color {
     { City::Algiers, Color::Black },
     { City::Atlanta, Color::Blue },
     { City::Baghdad, Color::Black },

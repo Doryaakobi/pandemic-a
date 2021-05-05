@@ -55,7 +55,7 @@ enum City{
 };
 
 
-inline std::string getCity(City c) {
+inline std::string cityString(City c) {
 
     switch (c){
         case Algiers: return "Algiers"; break;

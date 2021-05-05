@@ -12,7 +12,8 @@ namespace pandemic{
         
         static std::map<City,std::set<City>> board_graph;
         std::map<City,int> disease_level;
-        std::set<City> cured;
+        std::set<Color> cured;
+        // std::map<Color , bool> cured;
         std::set<City> research_stations;
 
         public:

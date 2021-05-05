@@ -11,68 +11,67 @@ namespace pandemic
         set<City> research_stations;
 */
 
-    int &Board::operator[](City city)
-    {
+    int &Board::operator[](City city){
         return disease_level[city];
     }
 
     bool Board::is_clean(){
-        for (auto &city : disease_level){
-            if (city.second > 0){
-                return false;
-            }
-        }
+        // for (auto &city : disease_level){
+        //     if (city.second > 0){
+        //         return false;
+        //     }
+        // }
         return true;
     }
 
-
-
     void Board::remove_cures(){
-        for (auto &city : disease_level){
-            city.second = 0;
-        }
+        // for (auto& city : disease_level){
+        //     city.second = 0;
+        // }
+    }
+
+    bool Board::isConnected(City& src, City& dst){
+        
+        // if(board_graph.at(src).count(dst) > 0){
+        //     return true;
+        // }
+        return false;
+    }
+
+    bool Board::isCured(Color c){
+
+        // if(cured.count(c) > 0){
+        //     return true;
+        // }
+        return false;
+    }
+
+    void Board::markCure(Color c){
+        // cured.insert(c);
+    }
+
+    void Board::buildResearch(City& city){
+        // research_stations.insert(city);
+    }
+
+    bool Board::hasResearch(City & city){
+
+        // if(research_stations.count(city) > 0){
+        //     return true;
+        // }
+        return false;
     }
 
     std::ostream &operator<<(std::ostream &out, const Board &b)
     {
 
-        std::cout << "operator";
+        // std::cout << "operator";
         return out;
     }
 
 
-    bool Board::isConnected(City& src, City& dst){
-        
-        if(board_graph.at(src).count(dst) > 0){
-            return true;
-        }
-        return false;
-    }
 
-    bool Board::isCured(Color c){
-        if(cured.contains(c)){
-            return true; 
-        }
-        return false;
-    }
-
-    void Board::markCure(Color c){
-        cured.insert(c);
-    }
-
-    void Board::buildResearch(City& city){
-
-        research_stations.insert(city);
-    }
-
-    bool Board::hasResearch(City & city){
-
-        return research_stations.contains(city);
-    }
-
-
-
-    std::map<City, std::set<City>> Board::board_graph{
+    map<City,set<City>> Board::board_graph{
 
         {Algiers, {Madrid, Paris, Istanbul, Cairo}},
         {Atlanta, {Chicago, Miami, Washington}},
